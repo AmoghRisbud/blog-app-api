@@ -7,16 +7,15 @@ import { createConnection } from 'typeorm'
 import cors = require('cors')
 import bodyParser = require('body-parser')
 const router = express.Router()
-import User from './entities/User'
+import User from './entities/User';
+import Post from './entities/Post';
 import isAuthenticated from "./middleware/isAuthenticated";
+
 import SessionController from "./controllers/SessionController";
 import UserController from "./controllers/UserController";
-import FileController from "./controllers/FileController";
-import File from "./entities/File";
-import isAuthorizedToDownloadFile from "./middleware/isAuthorizedToDownloadFile";
-const fileUpload = require('express-fileupload')
+import PostController from "./controllers/PostController";
 
-const main = async () => {
+const main = async () => { 
 
   app.use(bodyParser.json())
   app.use(cors({ origin: process.env.FRONTEND_SERVER, credentials: true }))
@@ -31,7 +30,7 @@ const main = async () => {
     database: process.env.DB_NAME as string,
     synchronize: true,
     entities: [
-      User, File
+      User, Post
     ],
     logging: true,
   })
@@ -42,18 +41,18 @@ const main = async () => {
   router.get('/session', isAuthenticated, SessionController.show)
   router.delete('/session', isAuthenticated, SessionController.destroy)
 
-  router.get('/file', isAuthenticated, FileController.index)
-  router.post('/file',isAuthenticated,fileUpload(),FileController.create)
-  router.delete('/file/:uuid', isAuthenticated, FileController.destroy)
-  router.get('/files/:uuid', isAuthorizedToDownloadFile, FileController.fetchFile)
-  router.all('/files/*')
-  router.use('/files', express.static(process.env.FILES as string))
+  router.get('/post', isAuthenticated, PostController.index)
+  router.get('/mypost', isAuthenticated, PostController.mypost)
+  router.post('/post',isAuthenticated, PostController.create)
+  router.delete('/post/:uuid', isAuthenticated, PostController.destroy)
+  router.get('/post/:uuid', isAuthenticated, PostController.fetchPost)
+  router.all('/posts/*')
+  // router.use('/posts', express.static(process.env.FILES as string))
 
   app.use('/api', router)
   app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}/api`)
   })
-
 }
 
 main()

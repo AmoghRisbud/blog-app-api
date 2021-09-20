@@ -8,6 +8,8 @@ const SessionController = {
   create: async (req: any, res: any) => {
 
     if (!req.body.username) {
+      
+      
       return res.status(400).send({
         errors: {username: 'Required'},
       })

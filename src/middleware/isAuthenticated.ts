@@ -24,6 +24,8 @@ const authenticateUser = async (token: any) => {
       .from(User, 'user')
       .where({ id: result[0].id })
       .execute()
+
+
     return userInfo[0]
   } catch (err) {
     return false
@@ -33,11 +35,15 @@ const authenticateUser = async (token: any) => {
 export default (req: any, res: any, next: any) => {
   const token = req.get('x-session-cookie')
   try {
-    ;(async () => {
+    (async () => {
       const status = await authenticateUser(token)
       if (status) {
+        // console.log(req.body);
+        
         req.body.whoSentTheRequest = status
         next()
+
+        
       } else {
         res.status(401).send('Unauthorized access.')
       }

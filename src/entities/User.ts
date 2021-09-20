@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn, OneToMany,
 } from 'typeorm'
-import File from "./File";
+import Post from "./Post";
 
 @Entity()
 export default class User {
@@ -13,7 +13,7 @@ export default class User {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Column({unique: true})
+  @Column({ unique: true })
   username!: string
 
   @Column()
@@ -31,7 +31,6 @@ export default class User {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @OneToMany(() => File, (file) => file.user)
-  files: File[]
-
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Array<Post>
 }

@@ -7,7 +7,8 @@ const UserController = {
 
   create: async (req: any, res: any) => {
 
-    const hashedPassword = await argon2.hash(req.body.password)
+    const hashedPassword = 
+    await argon2.hash(req.body.password)
     const sessionToken = uuid()
     try{
       await getConnection()

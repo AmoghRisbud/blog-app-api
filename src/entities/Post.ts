@@ -8,16 +8,22 @@ import {
 import User from "./User";
 
 @Entity()
-export default class File {
+export default class Post {
 
   @PrimaryGeneratedColumn()
   id!: number
 
   @Column()
   userId!:number
+  
+  @Column()
+  title!: string
 
-  @Column({unique: true})
-  filename!: string
+  @Column()
+  summary!: string
+
+  @Column()
+  post!: string
 
   @Column()
   uuid!:string
@@ -31,7 +37,6 @@ export default class File {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @ManyToOne(() => User, (user) => user.files)
+  @ManyToOne(() => User, (user) => user.posts)
   user: User
-
 }
